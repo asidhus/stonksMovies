@@ -8,7 +8,8 @@ const MovieContext = createContext();
 
 
 const fetchBookMarks = async (setBookMarkedMovies) =>{
-  const url = `${process.env.BASE_URL}/api/bookmark`;
+  const url = `/api/bookmark`;
+  console.log(url);
   let response;
   try{
     response = await fetch(url);
