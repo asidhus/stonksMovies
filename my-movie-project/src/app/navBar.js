@@ -53,7 +53,7 @@ function generateNavLinks () {
       ));
 }
 
-export default function navBar() {
+export default function NavBar() {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();

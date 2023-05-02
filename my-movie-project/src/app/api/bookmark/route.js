@@ -1,7 +1,4 @@
-import { addMovieId, getBookMarkedMovies, deleteMovieId } from '@/app/lib/db'
-
-
-
+import { addMovieId, getBookMarkedMovies, deleteMovieId } from "@/app/lib/db";
 
 export async function POST(req, res) {
   let body;
@@ -20,12 +17,9 @@ export async function POST(req, res) {
       statusText: "add body param missing",
     });
   }
-  try{
-    console.time()
+  try {
     await addMovieId(body.addId);
-    console.timeEnd()
-
-  }catch(err){
+  } catch (err) {
     return new Response("Internal Error", {
       status: 500,
       statusText: "Internal Error",
@@ -34,14 +28,11 @@ export async function POST(req, res) {
   return new Response("Hello, Next.js!");
 }
 
-
 export async function GET(req, res) {
   let result;
-  try{
-    console.time()
-    result = await getBookMarkedMovies()
-    console.timeEnd()
-  }catch(err){
+  try {
+    result = await getBookMarkedMovies();
+  } catch (err) {
     return new Response("Internal Error", {
       status: 500,
       statusText: "Internal Error",
@@ -49,7 +40,6 @@ export async function GET(req, res) {
   }
   return new Response(JSON.stringify(result));
 }
-
 
 export async function DELETE(req, res) {
   const { searchParams } = new URL(req.url);
@@ -61,11 +51,9 @@ export async function DELETE(req, res) {
     });
   }
   let result;
-  try{
-    console.time()
+  try {
     result = await deleteMovieId(id);
-    console.timeEnd()
-  }catch(err){
+  } catch (err) {
     return new Response("Internal Error", {
       status: 500,
       statusText: "Internal Error",
