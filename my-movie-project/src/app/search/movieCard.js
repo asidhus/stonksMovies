@@ -18,94 +18,95 @@ import { BsBookmarkPlusFill, BsBookmarkPlus } from "react-icons/bs";
 
 const imagePath = "https://image.tmdb.org/t/p/original";
 
-const deleteBookMarks = async (removeBookMarkedMovie, id) =>{
+const deleteBookMarks = async (removeBookMarkedMovie, id) => {
   const url = `/api/bookmark?deleteId=${id}`;
   let response;
-  try{
+  try {
     response = await fetch(url, {
-      method: 'DELETE',
+      method: "DELETE",
     });
-  }catch(err){
-     return;
+  } catch (err) {
+    return;
   }
-  if(!response.ok) {
-    throw new Error('Failed to delete movie')
+  if (!response.ok) {
+    throw new Error("Failed to delete movie");
   }
   removeBookMarkedMovie(id);
-}
+};
 
-const addBookMarks = async (addBookMarkedMovie, id) =>{
+const addBookMarks = async (addBookMarkedMovie, id) => {
   const url = `/api/bookmark`;
   let response;
-  try{
+  try {
     response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({addId: id}),
+      body: JSON.stringify({ addId: id }),
     });
-  }catch(err){
-     return;
+  } catch (err) {
+    return;
   }
-  if(!response.ok) {
-    throw new Error('Failed to delete movie')
+  if (!response.ok) {
+    throw new Error("Failed to delete movie");
   }
   addBookMarkedMovie(id);
-}
-
-
-
-
+};
 
 export default function MovieCard({ title, release_date, poster_path, id }) {
-  const { bookMarkedMovies, removeBookMarkedMovie, addBookMarkedMovie } = useContext(MovieContext);
-  
+  const { bookMarkedMovies, removeBookMarkedMovie, addBookMarkedMovie } =
+    useContext(MovieContext);
+
   return (
-    <>
-      <Center key={id} py={12}>
+    <Center key={id} py={12}>
+      <Box
+        role={"group"}
+        p={6}
+        maxW={"330px"}
+        h={"550px"}
+        w={"full"}
+        bg={useColorModeValue("white", "gray.800")}
+        boxShadow={"2xl"}
+        rounded={"lg"}
+        pos={"relative"}
+        zIndex={1}
+      >
         <Box
-          role={"group"}
-          p={6}
-          maxW={"330px"}
-          w={"full"}
-          bg={useColorModeValue("white", "gray.800")}
-          boxShadow={"2xl"}
           rounded={"lg"}
+          mt={-12}
           pos={"relative"}
-          zIndex={1}
+          _after={{
+            transition: "all .3s ease",
+            content: '""',
+            w: "full",
+            h: "full",
+            pos: "absolute",
+            top: 5,
+            left: 0,
+            backgroundImage: `url(${imagePath + poster_path})`,
+            filter: "blur(15px)",
+            zIndex: -1,
+          }}
+          _groupHover={{
+            _after: {
+              filter: "blur(20px)",
+            },
+          }}
         >
-          <Box
-            rounded={"lg"}
-            mt={-12}
-            pos={"relative"}
-            _after={{
-              transition: "all .3s ease",
-              content: '""',
-              w: "full",
-              h: "full",
-              pos: "absolute",
-              top: 5,
-              left: 0,
-              backgroundImage: `url(${imagePath + poster_path})`,
-              filter: "blur(15px)",
-              zIndex: -1,
-            }}
-            _groupHover={{
-              _after: {
-                filter: "blur(20px)",
-              },
-            }}
-          >
-            <Link href={`/movie?id=${id}`}>
-              <Image
-                rounded={"lg"}
-                objectFit={"cover"}
-                src={imagePath + poster_path}
-              />
-            </Link>
-            <Flex
-            onClick = {bookMarkedMovies[id] ? () => deleteBookMarks(removeBookMarkedMovie,id) : () => addBookMarks(addBookMarkedMovie,id)}
+          <Link href={`/movie?id=${id}`}>
+            <Image
+              rounded={"lg"}
+              objectFit={"cover"}
+              src={imagePath + poster_path}
+            />
+          </Link>
+          <Flex
+            onClick={
+              bookMarkedMovies[id]
+                ? () => deleteBookMarks(removeBookMarkedMovie, id)
+                : () => addBookMarks(addBookMarkedMovie, id)
+            }
             position="absolute"
             bottom={2}
             right={2}
@@ -121,23 +122,25 @@ export default function MovieCard({ title, release_date, poster_path, id }) {
               bg: "rgba(0, 0, 0, 0.7)", // Adjust the opacity as needed
             }}
           >
-            <Icon as={bookMarkedMovies[id] ? BsBookmarkPlusFill : BsBookmarkPlus} boxSize={8} />
+            <Icon
+              as={bookMarkedMovies[id] ? BsBookmarkPlusFill : BsBookmarkPlus}
+              boxSize={8}
+            />
           </Flex>
-          </Box>
-          <Stack pt={10} align={"center"}>
-            <Link href={`/movie?id=${id}`}>
-              <Heading fontSize={"xl"} fontFamily={"body"} fontWeight={800}>
-                {title}
-              </Heading>
-              <Stack direction={"row"} align={"center"}>
-                <Text fontWeight={500} fontSize={"l"}>
-                  {release_date}
-                </Text>
-              </Stack>
-            </Link>
-          </Stack>
         </Box>
-      </Center>
-    </>
+        <Stack pt={10} align={"center"}>
+          <Link href={`/movie?id=${id}`}>
+            <Heading fontSize={"xl"} fontFamily={"body"} fontWeight={800}>
+              {title}
+            </Heading>
+            <Stack direction={"row"} align={"center"}>
+              <Text fontWeight={500} fontSize={"l"}>
+                {release_date}
+              </Text>
+            </Stack>
+          </Link>
+        </Stack>
+      </Box>
+    </Center>
   );
 }
