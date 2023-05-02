@@ -18,15 +18,13 @@ import { BsBookmarkPlusFill, BsBookmarkPlus } from "react-icons/bs";
 import useSWR from "swr";
 
 const deleteBookMarks = async (removeBookMarkedMovie, id) =>{
-  const url = `http://localhost:3000/api/bookmark?deleteId=${id}`;
+  const url = `${process.env.BASE_URL}/api/bookmark?deleteId=${id}`;
   let response;
   try{
     response = await fetch(url, {
       method: 'DELETE',
     });
   }catch(err){
-     console.log(err);
-     console.log('I errored out while deleting\n\n\n\n')
      return;
   }
   if(!response.ok) {
@@ -36,7 +34,7 @@ const deleteBookMarks = async (removeBookMarkedMovie, id) =>{
 }
 
 const addBookMarks = async (addBookMarkedMovie, id) =>{
-  const url = `http://localhost:3000/api/bookmark`;
+  const url = `${process.env.BASE_URL}/api/bookmark`;
   let response;
   try{
     response = await fetch(url, {
@@ -47,8 +45,6 @@ const addBookMarks = async (addBookMarkedMovie, id) =>{
       body: JSON.stringify({addId: id}),
     });
   }catch(err){
-     console.log(err);
-     console.log('I errored out while deleting\n\n\n\n')
      return;
   }
   if(!response.ok) {

@@ -19,7 +19,7 @@ import { BsBookmarkPlusFill, BsBookmarkPlus } from "react-icons/bs";
 const imagePath = "https://image.tmdb.org/t/p/original";
 
 const deleteBookMarks = async (removeBookMarkedMovie, id) =>{
-  const url = `http://localhost:3000/api/bookmark?deleteId=${id}`;
+  const url = `${process.env.BASE_URL}/api/bookmark?deleteId=${id}`;
   let response;
   try{
     response = await fetch(url, {
@@ -35,7 +35,7 @@ const deleteBookMarks = async (removeBookMarkedMovie, id) =>{
 }
 
 const addBookMarks = async (addBookMarkedMovie, id) =>{
-  const url = `http://localhost:3000/api/bookmark`;
+  const url = `${process.env.BASE_URL}/api/bookmark`;
   let response;
   try{
     response = await fetch(url, {
