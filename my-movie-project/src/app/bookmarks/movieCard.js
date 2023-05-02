@@ -67,6 +67,7 @@ export default function MovieCard({ title, release_date, poster_path, id }) {
           role={"group"}
           p={6}
           maxW={"330px"}
+          h={"550px"}
           w={"full"}
           bg={useColorModeValue("white", "gray.800")}
           boxShadow={"2xl"}
