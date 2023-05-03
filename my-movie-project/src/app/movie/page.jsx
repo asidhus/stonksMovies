@@ -1,8 +1,8 @@
-"use client";
+'use client';
+
 import { useContext } from 'react';
-import MovieContext from '@/context/movies';
-import {
-  Box,
+import useSWR from 'swr';
+import { Box,
   Container,
   Stack,
   Text,
@@ -10,54 +10,19 @@ import {
   Flex,
   Heading,
   SimpleGrid,
-} from "@chakra-ui/react";
+  Icon } from '@chakra-ui/react';
+import { BsBookmarkPlusFill, BsBookmarkPlus } from 'react-icons/bs';
+import MovieContext from '../context/movies';
 
-import { Icon } from "@chakra-ui/react";
-import { BsBookmarkPlusFill, BsBookmarkPlus } from "react-icons/bs";
 
-import useSWR from "swr";
+import { deleteBookMarks, addBookMarks } from '../components/addRemoveBookMarks';
 
-const deleteBookMarks = async (removeBookMarkedMovie, id) =>{
-  const url = `/api/bookmark?deleteId=${id}`;
-  let response;
-  try{
-    response = await fetch(url, {
-      method: 'DELETE',
-    });
-  }catch(err){
-     return;
-  }
-  if(!response.ok) {
-    throw new Error('Failed to delete movie')
-  }
-  removeBookMarkedMovie(id);
-}
-
-const addBookMarks = async (addBookMarkedMovie, id) =>{
-  const url = `/api/bookmark`;
-  let response;
-  try{
-    response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({addId: id}),
-    });
-  }catch(err){
-     return;
-  }
-  if(!response.ok) {
-    throw new Error('Failed to delete movie')
-  }
-  addBookMarkedMovie(id);
-}
 
 const fetchMovie = async (url) => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("Failed to fetch movies");
+    throw new Error('Failed to fetch movies');
   }
   return response.json();
 };
@@ -72,10 +37,10 @@ export default function Movie({ searchParams }) {
     return null;
   }
 
-  const imagePath = "https://image.tmdb.org/t/p/original";
+  const imagePath = 'https://image.tmdb.org/t/p/original';
 
   return (
-    <Container maxW={"10xl"}>
+    <Container maxW="10xl">
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
@@ -83,12 +48,16 @@ export default function Movie({ searchParams }) {
       >
         <Flex direction="column" position="relative">
           <Image
+            fallbackSrc="/Image_Coming_Soon.png"
             rounded="lg"
             objectFit="contain"
             src={imagePath + data.poster_path}
           />
           <Flex
-            onClick = {bookMarkedMovies[data.id] ? () => deleteBookMarks(removeBookMarkedMovie,data.id) : () => addBookMarks(addBookMarkedMovie,data.id)}
+            onClick={
+              bookMarkedMovies[data.id]
+              ? () => deleteBookMarks(removeBookMarkedMovie, data.id)
+              : () => addBookMarks(addBookMarkedMovie, data.id)}
             position="absolute"
             bottom={2}
             right={2}
@@ -101,22 +70,28 @@ export default function Movie({ searchParams }) {
             h={12}
             cursor="pointer"
             _hover={{
-              bg: "rgba(0, 0, 0, 0.7)", // Adjust the opacity as needed
+              bg: 'rgba(0, 0, 0, 0.7)', // Adjust the opacity as needed
             }}
           >
-            <Icon as={bookMarkedMovies[data.id] ? BsBookmarkPlusFill : BsBookmarkPlus} boxSize={8} />
+            <Icon
+              as={
+              bookMarkedMovies[data.id]
+              ? BsBookmarkPlusFill
+              : BsBookmarkPlus}
+              boxSize={8}
+            />
           </Flex>
         </Flex>
         <Stack spacing={{ base: 6, md: 10 }}>
-          <Box as={"header"}>
+          <Box as="header">
             <Heading
               lineHeight={1.1}
               fontWeight={600}
-              fontSize={{ base: "2xl", sm: "4xl", lg: "5xl" }}
+              fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
             >
               {data.original_title}
             </Heading>
-            <Text fontWeight={300} fontSize={"xl"}>
+            <Text fontWeight={300} fontSize="xl">
               {data.overview}
             </Text>
           </Box>

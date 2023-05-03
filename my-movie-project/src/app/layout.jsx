@@ -1,6 +1,5 @@
-
 import ChakraProvider from './chakraProviders';
-import  { MovieProvider }  from '../context/movies'
+import { MovieProvider } from './context/movies';
 import NavBar from './navBar';
 
 
@@ -9,12 +8,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ChakraProvider>
-            <MovieProvider>
-              <NavBar></NavBar>
-              {children}
-            </MovieProvider>
+          <MovieProvider>
+            <NavBar />
+            {children}
+          </MovieProvider>
         </ChakraProvider>
       </body>
     </html>
-  )
+  );
 }

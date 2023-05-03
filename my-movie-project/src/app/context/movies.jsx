@@ -1,54 +1,49 @@
-"use client"
+'use client';
 
 import { createContext, useState, useRef, useEffect } from 'react';
-import useSWR, { mutate } from 'swr';
 
 const MovieContext = createContext();
 
 
-
-const fetchBookMarks = async (setBookMarkedMovies) =>{
-  const url = `/api/bookmark`;
-  console.log(url);
+const fetchBookMarks = async (setBookMarkedMovies) => {
+  const url = '/api/bookmark';
   let response;
-  try{
+  try {
     response = await fetch(url);
-  }catch(err){
-     return;
+  } catch (err) {
+    return;
   }
 
 
-  if(!response.ok) {
-    throw new Error('Failed to fetch movies')
+  if (!response.ok) {
+    throw new Error('Failed to fetch movies');
   }
-  let bookmarks = await response.json();
+  const bookmarks = await response.json();
   setBookMarkedMovies(bookmarks);
-}
+};
 
 
 function MovieProvider({ children }) {
-
-  
   const [bookMarkedMovies, setBookMarkedMovies] = useState({});
 
   const prevBookMarkedMoviesData = useRef([]);
 
   useEffect(() => {
-    fetchBookMarks(setBookMarkedMovies)
+    fetchBookMarks(setBookMarkedMovies);
   }, []);
 
 
   const removeBookMarkedMovie = (id) => {
-    const current = {... bookMarkedMovies};
+    const current = { ...bookMarkedMovies };
     delete current[id];
     setBookMarkedMovies(current);
-  }
+  };
 
   const addBookMarkedMovie = (id) => {
-    const current = {... bookMarkedMovies};
+    const current = { ...bookMarkedMovies };
     current[id] = true;
     setBookMarkedMovies(current);
-  }
+  };
 
 
   const valueToShare = {
