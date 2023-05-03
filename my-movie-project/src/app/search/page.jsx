@@ -1,6 +1,6 @@
 'use client';
 
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Center, Heading } from '@chakra-ui/react';
 import { React } from 'react';
 import useSWR from 'swr';
 import MovieCard from '../components/movieCard';
@@ -31,8 +31,18 @@ export default function Search({ searchParams }) {
 
   const { data } = useSWR(url, fetchMovies);
 
-  if (!data?.results) {
-    return null;
+  if (!data?.results || !data?.results.length > 0) {
+    return (
+      <Center>
+        <Heading>
+          {
+            search
+            ? `No results for search term: ${search}`
+            : 'No results'
+          }
+        </Heading>
+      </Center>
+    );
   }
 
   const generateMovies = () => data.results.map(movie => (

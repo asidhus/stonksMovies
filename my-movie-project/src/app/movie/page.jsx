@@ -12,7 +12,6 @@ import { Box,
   SimpleGrid,
   ListItem,
   List,
-  useColorModeValue,
   Icon } from '@chakra-ui/react';
 import { BsBookmarkPlusFill, BsBookmarkPlus } from 'react-icons/bs';
 import MovieContext from '../context/movies';
