@@ -107,7 +107,7 @@ export default function NavBar() {
                 onChange={handleSearchChange}
               />
               <InputRightAddon>
-                <Button onClick={handleSearchSubmit}>Search</Button>
+                <Button onClick={handleSearchSubmit} colorScheme="teal">Search</Button>
               </InputRightAddon>
             </InputGroup>
           </form>
