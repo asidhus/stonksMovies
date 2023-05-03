@@ -10,6 +10,9 @@ import { Box,
   Flex,
   Heading,
   SimpleGrid,
+  ListItem,
+  List,
+  useColorModeValue,
   Icon } from '@chakra-ui/react';
 import { BsBookmarkPlusFill, BsBookmarkPlus } from 'react-icons/bs';
 import MovieContext from '../context/movies';
@@ -36,7 +39,7 @@ export default function Movie({ searchParams }) {
   if (isLoading) {
     return null;
   }
-
+  console.log(data);
   const imagePath = 'https://image.tmdb.org/t/p/original';
 
   return (
@@ -94,6 +97,62 @@ export default function Movie({ searchParams }) {
             <Text fontWeight={300} fontSize="xl">
               {data.overview}
             </Text>
+          </Box>
+          <Box>
+            <Text
+              fontSize={{ base: '18px', lg: '20px' }}
+              color="black"
+              fontWeight="bold"
+              textTransform="uppercase"
+              mb="4"
+            >
+              Movie Details
+            </Text>
+
+            <List spacing={2}>
+              <ListItem>
+                <Text as="span" fontWeight="500">
+                  Movie Budget:
+                </Text>{' '}
+                {data.budget ? `${data.budget}$` : 'Unknown'}
+              </ListItem>
+              <ListItem>
+                <Text as="span" fontWeight="500">
+                  Genres:
+                </Text>{' '}
+                {data.genres.length > 0 ? data.genres.map(x => `${x.name} `) : 'No generes listed' }
+              </ListItem>
+              <ListItem>
+                <Text as="span" fontWeight="500">
+                  Release Date:
+                </Text>{' '}
+                {data.release_date}
+              </ListItem>
+              <ListItem>
+                <Text as="span" fontWeight="500">
+                  Status
+                </Text>{' '}
+                {data.status || 'Unkown'}
+              </ListItem>
+              <ListItem>
+                <Text as="span" fontWeight="500">
+                  Popularity:
+                </Text>{' '}
+                {data.popularity || 'Unkown'}
+              </ListItem>
+              <ListItem>
+                <Text as="span" fontWeight="500">
+                  Revneue:
+                </Text>{' '}
+                {data.revenue ? `${data.revenue}$` : 'Unknown'}
+              </ListItem>
+              <ListItem>
+                <Text as="span" fontWeight="500">
+                  IMBD ID:
+                </Text>{' '}
+                {data.imdb_id || 'Unknown'}
+              </ListItem>
+            </List>
           </Box>
         </Stack>
       </SimpleGrid>
