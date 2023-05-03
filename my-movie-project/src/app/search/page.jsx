@@ -1,6 +1,6 @@
 'use client';
 
-import { Grid, GridItem, Text, Center, Heading } from '@chakra-ui/react';
+import { Grid, GridItem, Center, Heading } from '@chakra-ui/react';
 import { React } from 'react';
 import useSWR from 'swr';
 import MovieCard from '../components/movieCard';
