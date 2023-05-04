@@ -2,21 +2,28 @@
 
 import { useContext, useEffect } from 'react';
 import useSWR from 'swr';
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Grid, GridItem, Heading, Center } from '@chakra-ui/react';
 
 import MovieContext from '../context/movies';
 import MovieCard from '../components/movieCard';
 
 
 const fetchMovies = async (urls) => {
+  if (!urls) {
+    return null;
+  }
   const f = url => fetch(url).then(r => r.json());
-  return Promise.all(urls.map(url => f(url)));
+  const result = await Promise.all(urls.map(url => f(url)));
+  return result;
 };
+
 
 export default function BookMarks() {
   const { bookMarkedMovies, prevBookMarkedMoviesData } = useContext(MovieContext);
-  const urls = Object.keys(bookMarkedMovies).map(movieId => `/api/movieInfo?movieId=${movieId}`);
-
+  let urls = Object.keys(bookMarkedMovies).map(movieId => `/api/movieInfo?movieId=${movieId}`);
+  if (urls.length === 0) {
+    urls = null;
+  }
   const { data, isLoading } = useSWR(urls, fetchMovies);
 
   useEffect(() => {
@@ -26,7 +33,6 @@ export default function BookMarks() {
   }, [isLoading]);
 
   const bookMarkedData = data || prevBookMarkedMoviesData.current;
-
 
   const generateMovies = () => bookMarkedData.map(movie => (
     <GridItem key={movie.id}>
@@ -39,6 +45,14 @@ export default function BookMarks() {
       />
     </GridItem>
   ));
+
+  if (bookMarkedData.length === 0) {
+    return (
+      <Center>
+        <Heading>No BookMarks Saved</Heading>
+      </Center>
+    );
+  }
 
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap={5}>
